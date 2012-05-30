@@ -1,0 +1,3 @@
+This Perl example requires Net::SMTP::TLS which may not be installed on 
+all systems. For information on installing this module, please refer to
+your system handbook or http://cpan.org
