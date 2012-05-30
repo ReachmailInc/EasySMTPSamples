@@ -1,0 +1,5 @@
+These are simple scripts that can be used to demo EasySMTP.
+
+For the most part, they can be run without installing any additional
+software. Where that is not the case, notes on dependencies are provided
+in the README file for each script
