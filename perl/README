@@ -1,3 +1,7 @@
 This Perl example requires Net::SMTP::TLS which may not be installed on 
 all systems. For information on installing this module, please refer to
 your system handbook or http://cpan.org
+
+Some versions of this module may have a bug in the PLAIN authorization method
+(required for using EasySMTP). Included in this repo is a corrected version
+of the module.
