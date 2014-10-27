@@ -11,33 +11,21 @@ Example Execution:
 boolean success = false; //initialize variable
 
 try {
+	success = SendEasySMTPMail.setupAndSend("recipient@mail.com");	
+}	
 
-success = SendEasySMTPMail.setupAndSend("recipient@mail.com");
-
+catch (Exception e) {
+	out.println("Something went wrong. Please check console logs");
+	System.out.println(e.toString()); 
 }
-
-catch (Exception e)
-
-{
-
-out.println("Something went wrong. Please check console logs");
-
-System.out.println(e.toString()); }
 
 if (success)
-
 {
-
-out.println("Email Sent");
-
+	out.println("Email Sent");
 }
-
 else
-
 {
-
-out.println("The Java Class is having issues. Email not sent. Please check logs;");
-
+	out.println("The Java Class is having issues. Email not sent. Please check logs;");
 }
 
 %>
