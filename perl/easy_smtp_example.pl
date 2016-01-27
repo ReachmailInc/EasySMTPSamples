@@ -17,7 +17,7 @@ if (@ARGV < 4) {
 
 my $mailer = new Net::SMTP::TLS(
 	'ssrs.reachmail.net',
-	Hello => 'yourdomain.tld',
+	Hello => 'connectingdomain.tld',
 	Port => 25,
 	User => $ARGV[0],
 	Password => $ARGV[1],
