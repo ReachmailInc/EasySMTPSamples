@@ -1,54 +1,46 @@
 <?php
- 
-// PHP has no native SMTP support, we recommend the SwiftMail library
-// for adding SMTP support. http://swiftmailer.org/
-require_once '/path/to/swift/lib/swift_required.php'; 
-    
+
+require_once '/PathToSwiftModule/lib/vendor/autoload.php';
+
+$message_content = file_get_contents('/Path/To/HtmlContent/msg.htm');
+
 // Set message recipients
 $send_to            = array(
-                        'user1@domain.tld' => 'Bob Jones',
-                        'user2@domain.tld' => 'Bob Smith,
-                        'user3@domain.tld
+                        'email@domain.tld' => 'Recipient Name'
                     );
     
 // Set sender
-$sent_from          = array(
-                        'me@mydomain.tld' => 'Me'
-                    );
- 
+$sent_from          = array('email@domain.tld' => 'From Name');
 // Set subject and body
-$subject            = "Test message from EasySMTP";
-$body               = "This is a test message.";
+$subject            = "Attachment Test 1";
+$body = $message_content;
 
 // Set SMTP connection details
-$transport          = Swift_SmtpTransport::newInstance()
-    ->setHost('ssrs.reachmail.net') // Host.  This should not need to change
-    ->setPort(465) // Port.  Should not be changed as SwiftMail does not support starttls
-    ->setUsername('accountid\\username')
-    ->setPassword('Sup3rS3creT')
-    ->setEncryption('ssl') // set the encription type.
+$transport          = (new Swift_SmtpTransport('ssrs.reachmail.net', 587, 'tls'))
+    ->setUsername('USERNAME')
+    ->setPassword('PASSWORD')
     ;
 
 // Create a Mailer
-$mailer             = Swift_Mailer::newInstance($transport);
+$mailer             = new Swift_Mailer($transport);
+// SMTP logging (optional but very handy when needed)
+$logger = new Swift_Plugins_Loggers_EchoLogger();
+$mailer->registerPlugin(new Swift_Plugins_LoggerPlugin($logger));
 
 // Construct the message
-$message            = Swift_Message::newInstance()
-    ->setSubject($subject) // Set Subject line here
-    ->setContentType('text/html') // Sets the Content-Type
-    ->setFrom($sent_from) // Sets the sender address specified at the top
-    ->setTo($send_to) // Sets the recipient addresses sprecified at the top
-    ->setBody($body) // Sets the body of the email
+$message            = (new Swift_Message($subject))
+    ->setFrom($sent_from)
+    ->setContentType('text/html')
+    ->setTo($send_to)
+    ->setBody($body)
     ;
-
-// This method should be used to add addistional custom headers.
-// Use the format: $headers->addTextHeader('X-Tracking', '1'); to set other 
-// headers like X-Campaign or X-Address.
-$headers = $message->getHeaders();  
-$headers->addTextHeader('X-Tracking', '1');
+$message->attach(Swift_Attachment::fromPath('/Path/To/Attachment/Location/'));
+$headers = $message->getHeaders();
+//$headers->addTextHeader('x-dkim-options', 's=k1; i=FromEmail@domain.tld'); //optional DKIM key signing header. 
 
 // $result will be an integer representing the number of successful recipients
-$result = $mailer->send($message);
 
+ $result = $mailer->send($message);
 print $result . "\n";
+
 ?>
